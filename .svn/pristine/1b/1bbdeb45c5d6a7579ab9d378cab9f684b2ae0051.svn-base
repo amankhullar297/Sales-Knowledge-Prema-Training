@@ -1,0 +1,298 @@
+package com.prema.sales.controller;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.prema.sales.common.SessionBean;
+import com.prema.sales.dao.ClientCompanyDao;
+import com.prema.sales.dao.ProductDao;
+import com.prema.sales.dao.SalesKnowledgeDao;
+import com.prema.sales.entity.ClientCompany;
+import com.prema.sales.entity.OrgEmployee;
+import com.prema.sales.entity.Product;
+import com.prema.sales.entity.SalesKnowledge;
+
+@Controller
+public class SalesKnowledgeController {
+	@Autowired
+	SalesKnowledgeDao skdao;
+	@Autowired
+	ClientCompanyDao cdao;
+	@Autowired
+	ProductDao pdao;
+
+	@RequestMapping(value = "/temp", method = RequestMethod.GET)
+	public ModelAndView salesKnowledgeTemp(HttpSession session) {
+		SessionBean sessionBean = (SessionBean) session.getAttribute("sessionBean");
+		int orgId = sessionBean.getOrgId();
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("orgEmpSalesKnowledgeAdd");
+
+		List<ClientCompany> clientsList = cdao.selectByOrgId(orgId);
+		System.out.println(clientsList);
+		modelAndView.addObject("clientsList", clientsList);
+		List<Product> productsList = pdao.selectAllByOrgId(orgId);
+		modelAndView.addObject("productsList", productsList);
+		SalesKnowledge salesKnowledge = new SalesKnowledge();
+		int empId = sessionBean.getEmpId();
+		System.out.println("employee is-->>>" + empId);
+		List<SalesKnowledge> salesKnowledgeList = skdao.selectByEmpId(empId);
+		System.out.println("sales knowledge list of login emp->>>>>>>" + salesKnowledgeList);
+		modelAndView.addObject("salesKnowledgeList", salesKnowledgeList);
+		modelAndView.addObject(salesKnowledge);
+
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	public ModelAndView salesKnowledgeView(HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView();
+		SessionBean sessionBean = (SessionBean) session.getAttribute("sessionBean");
+		int orgId = sessionBean.getOrgId();
+
+		modelAndView.setViewName("orgEmpSalesKnowledgeSelect");
+		List<ClientCompany> clientsList = cdao.selectByOrgId(orgId);
+		modelAndView.addObject("clientsList", clientsList);
+		List<Product> productsList = pdao.selectAllByOrgId(orgId);
+		modelAndView.addObject("productsList", productsList);
+		SalesKnowledge salesKnowledge = new SalesKnowledge();
+		modelAndView.addObject(salesKnowledge);
+
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/salesKnowledgeInsert", method = RequestMethod.POST)
+	public ModelAndView salesKnowledgeInsert(@ModelAttribute("salesKnowledge") SalesKnowledge salesKnowledge,
+			HttpSession session) {
+		System.out.println(salesKnowledge.getSalesDate());
+		String result = "";
+		if (salesKnowledge.getSalesId() > 0) {
+			result = skdao.update(salesKnowledge);
+		} else {
+			java.util.Date date = new java.util.Date();
+			java.sql.Date entryDate = new java.sql.Date(date.getTime());
+			salesKnowledge.setEntryDate(entryDate);
+			SessionBean sessionBean = (SessionBean) session.getAttribute("sessionBean");
+			int empId = sessionBean.getEmpId();
+			OrgEmployee regEmployee = new OrgEmployee();
+			regEmployee.setEmpId(empId);
+			salesKnowledge.setRegEmployee(regEmployee);
+			System.out.println(salesKnowledge);
+			salesKnowledge.setKnowStatus("T");
+			result = skdao.insert(salesKnowledge);
+		}
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("orgEmpSalesKnowledgeAdd");
+
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/salesKnowledgeDelete", method = RequestMethod.POST)
+	public ModelAndView salesKnowledgeDelete(@RequestParam("salesId") int salesId,
+			@RequestParam("productId") int productId, @RequestParam("clientId") int clientId, HttpSession session) {
+		String result = skdao.delete(salesId);
+		System.out.println(productId + "," + clientId);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("orgEmpSalesKnowledgeAdd");
+		SalesKnowledge salesKnowledge = new SalesKnowledge();
+		SessionBean sessionBean = (SessionBean) session.getAttribute("sessionBean");
+		int orgId = sessionBean.getOrgId();
+		int empId = sessionBean.getEmpId();
+		List<ClientCompany> clientsList = cdao.selectByOrgId(orgId);
+		List<Product> productsList = pdao.selectAllByOrgId(orgId);
+		modelAndView.addObject("clientsList", clientsList);
+		modelAndView.addObject("productsList", productsList);
+		List<SalesKnowledge> salesKnowledgeList=skdao.selectByEmpId(empId);
+		modelAndView.addObject("salesKnowledgeList", salesKnowledgeList);
+		modelAndView.addObject(salesKnowledge);
+
+
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/salesKnowledgeLoad", method = RequestMethod.POST)
+	public ModelAndView salesKnowledgeLoad(@RequestParam(name = "clientCompany.clientId") int clientId,
+			@RequestParam(name = "product.productId") int productId, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("orgEmpSalesKnowledgeSelect");
+		SessionBean sessionBean = (SessionBean) session.getAttribute("sessionBean");
+		int orgId = sessionBean.getOrgId();
+		modelAndView.getModelMap().addAttribute("clientId", clientId);
+		modelAndView.getModelMap().addAttribute("productId", productId);
+		SalesKnowledge salesKnowledge = new SalesKnowledge();
+		modelAndView.addObject(salesKnowledge);
+		List<ClientCompany> clientsList = cdao.selectByOrgId(orgId);
+		List<Product> productsList = pdao.selectAllByOrgId(orgId);
+		modelAndView.addObject("clientsList", clientsList);
+		modelAndView.addObject("productsList", productsList);
+
+		if (clientId > 0 && productId > 0 && orgId > 0) {
+			List<SalesKnowledge> list = skdao.selectByClientAndProductAndOrgId(clientId, productId, orgId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		} else if (clientId > 0 && productId == 0 && orgId == 0) {
+			List<SalesKnowledge> list = skdao.selectByClientId(clientId);
+			modelAndView.addObject("salesKnowledgeList", list);
+		} else if (productId > 0 && clientId == 0 && orgId == 0) {
+			List<SalesKnowledge> list = skdao.selectByProductId(productId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		} else if (clientId > 0 && productId > 0 && orgId == 0) {
+			List<SalesKnowledge> list = skdao.selectByClientAndProductId(clientId, productId);
+			modelAndView.addObject("salesKnowledgeList", list);
+		} else if (orgId > 0 && clientId == 0 && productId > 0) {
+			List<SalesKnowledge> list = skdao.selectByOrgAndProductId(orgId, productId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		} else if (orgId > 0 && clientId == 0 && productId == 0) {
+			List<SalesKnowledge> list = skdao.selectByOrgId(orgId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		}
+
+		else if (orgId > 0 && clientId > 0 && productId == 0) {
+			List<SalesKnowledge> list = skdao.selectByOrgAndClientId(orgId, clientId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		}
+
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/salesKnowledgeFind", method = RequestMethod.POST)
+	public ModelAndView salesKnowledgeFind(@RequestParam("salesId") int salesId,HttpSession session) {
+		SalesKnowledge salesKnowledge = skdao.findById(salesId);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("orgEmpSalesKnowledgeAdd");
+		modelAndView.addObject(salesKnowledge);
+		SessionBean sessionBean=(SessionBean)session.getAttribute("sessionBean");
+		int empId=sessionBean.getEmpId();
+		List<SalesKnowledge> salesKnowledgeList=skdao.selectByEmpId(empId);
+		int orgId=sessionBean.getOrgId();
+		modelAndView.addObject("salesKnowledgeList", salesKnowledgeList);
+		List<ClientCompany> clientsList=cdao.selectByOrgId(orgId);
+		List<Product> productsList=pdao.selectAllByOrgId(orgId);
+		modelAndView.addObject("clientsList", clientsList);
+		modelAndView.addObject("productsList", productsList);
+		modelAndView.addObject("update", "update");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/salesKnowledgeConfirm", method = RequestMethod.POST)
+	public ModelAndView salesKnowledgeConfirm(@RequestParam("salesId") int salesId, HttpSession session) {
+		String result = skdao.confirmKnowStatus(salesId);
+		SessionBean sessionBean = (SessionBean) session.getAttribute("sessionBean");
+		int empId = sessionBean.getEmpId();
+		int orgId = sessionBean.getOrgId();
+		List<SalesKnowledge> salesKnowledgeList = skdao.selectByEmpId(empId);
+		ModelAndView modelAndView = new ModelAndView("orgEmpSalesKnowledgeAdd");
+		modelAndView.addObject("salesKnowledgeList", salesKnowledgeList);
+		SalesKnowledge salesKnowledge = new SalesKnowledge();
+		modelAndView.addObject(salesKnowledge);
+		List<ClientCompany> clientsList=cdao.selectByOrgId(orgId);
+		List<Product> productsList=pdao.selectAllByOrgId(orgId);
+		modelAndView.addObject("clientsList", clientsList);
+		modelAndView.addObject("productsList", productsList);
+		return modelAndView;
+
+	}
+
+	@RequestMapping(value = "/adminView", method = RequestMethod.GET)
+	public ModelAndView salesKnowledgeAdminView(HttpSession session) {
+		ModelAndView view = new ModelAndView("orgAdminSalesKnowledgeView");
+		SessionBean sessionBean = (SessionBean) session.getAttribute("sessionBean");
+		int orgId = sessionBean.getOrgId();
+		List<ClientCompany> clientsList = cdao.selectByOrgId(orgId);
+		List<Product> productsList = pdao.selectAllByOrgId(orgId);
+		view.addObject("clientsList", clientsList);
+		view.addObject("productsList", productsList);
+		SalesKnowledge salesKnowledge=new SalesKnowledge();
+		view.addObject(salesKnowledge);
+		return view;
+
+	}
+	@RequestMapping(value="/postToHive", method=RequestMethod.POST)
+	public ModelAndView salesKnowledgePostToHive(@RequestParam("salesId") int salesId, HttpSession session) {
+		ModelAndView modelAndView=new ModelAndView("orgEmpSalesKnowledgeAdd");
+		SessionBean sessionBean=(SessionBean)session.getAttribute("sessionBean");
+		int empId=sessionBean.getEmpId();
+		int orgId=sessionBean.getOrgId();
+		List<SalesKnowledge> salesKnowledgeList=skdao.selectByEmpId(empId);
+		modelAndView.addObject("salesKnowledgeList", salesKnowledgeList);
+		SalesKnowledge salesKnowledge=new SalesKnowledge();
+		modelAndView.addObject(salesKnowledge);
+		List<ClientCompany> clientsList=cdao.selectByOrgId(orgId);
+		List<Product> productsList=pdao.selectAllByOrgId(orgId);
+		modelAndView.addObject("clientsList", clientsList);
+		modelAndView.addObject("productsList", productsList);
+		String result = skdao.postToHive(salesId);
+		System.out.println(result);
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/adminLoad", method = RequestMethod.POST)
+	public ModelAndView adminLoad(@RequestParam(name = "clientCompany.clientId") int clientId,
+			@RequestParam(name = "product.productId") int productId, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("orgAdminSalesKnowledgeView");
+		SessionBean sessionBean = (SessionBean) session.getAttribute("sessionBean");
+		int orgId = sessionBean.getOrgId();
+		modelAndView.getModelMap().addAttribute("clientId", clientId);
+		modelAndView.getModelMap().addAttribute("productId", productId);
+		SalesKnowledge salesKnowledge = new SalesKnowledge();
+		modelAndView.addObject(salesKnowledge);
+		List<ClientCompany> clientsList = cdao.selectByOrgId(orgId);
+		List<Product> productsList = pdao.selectAllByOrgId(orgId);
+		modelAndView.addObject("clientsList", clientsList);
+		modelAndView.addObject("productsList", productsList);
+
+		if (clientId > 0 && productId > 0 && orgId > 0) {
+			List<SalesKnowledge> list = skdao.selectByClientAndProductAndOrgId(clientId, productId, orgId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		} else if (clientId > 0 && productId == 0 && orgId == 0) {
+			List<SalesKnowledge> list = skdao.selectByClientId(clientId);
+			modelAndView.addObject("salesKnowledgeList", list);
+		} else if (productId > 0 && clientId == 0 && orgId == 0) {
+			List<SalesKnowledge> list = skdao.selectByProductId(productId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		} else if (clientId > 0 && productId > 0 && orgId == 0) {
+			List<SalesKnowledge> list = skdao.selectByClientAndProductId(clientId, productId);
+			modelAndView.addObject("salesKnowledgeList", list);
+		} else if (orgId > 0 && clientId == 0 && productId > 0) {
+			List<SalesKnowledge> list = skdao.selectByOrgAndProductId(orgId, productId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		} else if (orgId > 0 && clientId == 0 && productId == 0) {
+			List<SalesKnowledge> list = skdao.selectByOrgId(orgId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		}
+
+		else if (orgId > 0 && clientId > 0 && productId == 0) {
+			List<SalesKnowledge> list = skdao.selectByOrgAndClientId(orgId, clientId);
+			modelAndView.addObject("salesKnowledgeList", list);
+
+		}
+
+		return modelAndView;
+	}
+
+
+}

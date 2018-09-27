@@ -1,0 +1,88 @@
+package com.prema.sales.entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+@Entity
+@Table(name="Product")
+	public class Product {
+		@Id
+		@GeneratedValue(strategy=GenerationType.AUTO)
+		@Column
+	 private int productId;
+		@Column
+	 private String productProvider;
+		@Column
+	 private String productType;
+	 @Column
+	 private String usageType;
+	 @Column
+	 private int unitPrice;
+	 
+	 //@Column
+	 @ManyToOne
+	 @JoinColumn(name="orgId")
+	 private  RegOrg orgId;	
+	 
+	 @Column
+	 private String productStatus;
+	 
+	public int getProductId() {
+		return productId;
+	}
+	public String getProductProvider() {
+		return productProvider;
+	}
+	public void setProductProvider(String productProvider) {
+		this.productProvider = productProvider;
+	}
+	public String getProductType() {
+		return productType;
+	}
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+	public String getUsageType() {
+		return usageType;
+	}
+	public void setUsageType(String usageType) {
+		this.usageType = usageType;
+	}
+	public int getUnitPrice() {
+		return unitPrice;
+	}
+	public void setUnitPrice(int unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+	public RegOrg getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(RegOrg orgId) {
+		this.orgId = orgId;
+	}
+	
+	
+	public String getProductStatus() {
+		return productStatus;
+	}
+	public void setProductStatus(String productStatus) {
+		this.productStatus = productStatus;
+	}
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+	@Override
+	public String toString() {
+		return "Product [productId=" + productId + ", productProvider=" + productProvider + ", productType="
+				+ productType + ", usageType=" + usageType + ", unitPrice=" + unitPrice + ", orgId=" + orgId
+				+ ", productStatus=" + productStatus + "]";
+	}
+	
+	
+	}
+
+	

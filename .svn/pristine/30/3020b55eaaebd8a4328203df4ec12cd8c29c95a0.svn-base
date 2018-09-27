@@ -1,0 +1,59 @@
+package com.prema.sales.entity;
+import java.sql.Date;
+import com.prema.sales.entity.SalesKnowledge;
+
+//import javax.persistence.Column;
+//import javax.persistence.Entity;
+import javax.persistence.*;
+@Entity
+@Table(name="PlanHistory")
+
+public class PlanHistory {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column
+     private int planHId;
+	@Column
+     private int orgId;
+	@JoinColumn(name="planId",referencedColumnName = "planId")
+	@ManyToOne
+     private Plan plan;
+	@Column
+     private Date planDate;
+	public int getPlanHId() {
+		return planHId;
+	}
+	public void setPlanHId(int planHId) {
+		this.planHId = planHId;
+	}
+	public int getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(int orgId) {
+		this.orgId = orgId;
+	}
+
+	public Date getPlanDate() {
+		return planDate;
+	}
+	public void setPlanDate(Date planDate) {
+		this.planDate = planDate;
+	}
+	
+	public Plan getPlan() {
+		return plan;
+	}
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
+	@Override
+	public String toString() {
+		return "PlanHistory [planHId=" + planHId + ", orgId=" + orgId + ", planId=" + plan.getPlanId() + ", planDate=" + planDate
+				+ "]";
+	}
+	
+	
+}
+
+
+

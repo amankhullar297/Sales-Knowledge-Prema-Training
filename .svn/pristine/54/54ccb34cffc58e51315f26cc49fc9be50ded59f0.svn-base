@@ -1,0 +1,163 @@
+package com.prema.sales.daoImpl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.prema.sales.dao.OrgEmployeeDao;
+import com.prema.sales.entity.OrgEmployee;
+import com.prema.sales.entity.PssEmployee;
+import com.prema.sales.entity.RegOrgStatusView;
+import com.prema.sales.entity.Student;
+
+@Repository
+@Transactional
+public class OrgEmployeeDaoImpl  implements OrgEmployeeDao {
+
+	@Autowired
+	SessionFactory sessionFactory;
+
+	@Override
+	public String insert(OrgEmployee orgemp) {
+		try {
+			System.out.println("trying to get session factory");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to save record");
+			System.out.println(orgemp);
+			int id = (int) session.save(orgemp);
+			System.out.println("record inserted");
+			return "Employee record inserted with id=" + id;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+
+		}
+	}
+
+	@Override
+	public String update(OrgEmployee orgemp) {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to update");
+			session.update(orgemp);
+			System.out.println("undeted sucessfully");
+			return "Employee recorded with Id =" + orgemp.getEmpId();
+		}catch(Exception q )
+		{
+			q.printStackTrace();
+			return "Error";
+		}
+	}
+	
+	@Override
+	public int delete(int id) {
+		try {
+			System.out.println("trying to get session ");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to delete");
+			OrgEmployee org = session.get(OrgEmployee.class, id);
+			session.delete(org);
+			System.out.println("deleted");
+			return  org.getEmpId();
+			
+		}catch(Exception p)
+		{p.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public List<OrgEmployee> selectAll() {
+		
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Query q = session.createQuery("from OrgEmployee ");
+			List<OrgEmployee> list=q.list();
+			return list;
+			}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public OrgEmployee findByEmpId(int id) {
+		try {
+			System.out.println("trying to get session ");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to find by id"+id);
+			OrgEmployee org = session.get(OrgEmployee.class, id);
+			System.out.println("found");
+			return org;
+			
+		}catch(Exception p)
+		{p.printStackTrace();
+		return null;
+	}
+	}
+
+	@Override
+	public List<OrgEmployee> findByEmpName(String name) {
+		try {
+			System.out.println("tryinf to get session");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("querry created");
+			Query q = session.createQuery("from OrgEmployee where empName =:n ");
+			q.setString("n", name);
+			List<OrgEmployee> list=q.list();
+			return list;
+			}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
+	@Override
+	public List<OrgEmployee> findByOrgIdAndRole(int orgId, char role) {
+		Session session = sessionFactory.getCurrentSession();
+		Query q = session.createQuery("from OrgEmployee where orgId=:orgId and role=:role");
+		q.setInteger("orgId", orgId);
+		q.setString("role", role+"");
+		List<OrgEmployee> list=q.list();
+		return list;
+	}
+	
+	@Override
+	public boolean blockAndUnblock(int oe,String status) {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to update");
+			Query q = session.createQuery("update OrgEmployee set blockStatus=:status where empId=:n");
+			q.setString("status", status);
+			q.setInteger("n", oe).executeUpdate();
+			System.out.println("updated sucessfully"+q);
+			return true;
+		}catch(Exception q )
+		{
+			q.printStackTrace();
+			//return "Error";
+		}
+		return false;
+	}
+	
+	@Override
+	public List<OrgEmployee> selectOrgEmpView() {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Query q = session.createQuery("from OrgEmployee");
+			List<OrgEmployee> list=(List<OrgEmployee>) q.list();
+			return list;
+			}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+}

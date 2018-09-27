@@ -1,0 +1,53 @@
+package com.prema.sales;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import com.prema.*;
+import com.prema.sales.daoImpl.*;
+import com.prema.sales.dao.*;
+import com.prema.sales.entity.*;
+import java.util.*;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ClientCompanyTest {
+
+	@Autowired
+	private ClientCompanyDao ccd;
+	
+	/*public void contextLoads() {
+		insert();
+		//update();
+		//selectById();
+	
+	}*/
+	@Test
+	public void insert() {
+		ClientCompany cc=new ClientCompany();
+		cc.setClientName("Facebook");
+		cc.setClientAddress("Sector B, Indrapuri");
+		RegOrg ro=new RegOrg();
+		ro.setOrgId(1);
+		cc.setRegOrg(ro);
+		String result = ccd.insert(cc);
+		System.out.println(result);
+	}
+	//@Test
+	public void update() {
+		ClientCompany cc=new ClientCompany();
+		cc.setClientId(5);
+		cc.setClientName("Wipro");
+		cc.setClientAddress("IndraPuri");
+		String result=ccd.update(cc);  
+		System.out.println(result);
+	}
+	@Test
+	public void selectall() {
+		List<ClientCompany> c=ccd.selectByOrgId(1);
+		for(ClientCompany cc :c)
+			System.out.println(cc);
+	}
+}

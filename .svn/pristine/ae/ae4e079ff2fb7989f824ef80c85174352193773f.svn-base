@@ -1,0 +1,26 @@
+package com.prema.sales.dao;
+import java.util.List;
+import com.prema.sales.entity.SalesKnowledge;
+public interface SalesKnowledgeDao {
+	public String insert(SalesKnowledge sk);
+	public String delete(int id);
+	public String update(SalesKnowledge sk);
+	public List<SalesKnowledge> selectByOrgId(int id);
+	public List<SalesKnowledge> selectByOrgAndProductId(int orgId,int productId);
+	public List<SalesKnowledge> selectByOrgAndClientId(int orgId,int clientId);
+	
+	public List<SalesKnowledge> selectByProductId(int productId);
+	public List<SalesKnowledge> selectByClientAndProductId(int clientId,int productId);
+	public List<SalesKnowledge> selectByClientId(int clientId);
+	public List<SalesKnowledge> selectByClientAndProductAndOrgId(int clientId,int productId,int orgId);
+	
+	public SalesKnowledge findById(int salesId);
+	
+	
+	
+	
+	
+	
+
+	
+}

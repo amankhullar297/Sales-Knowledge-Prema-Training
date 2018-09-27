@@ -1,0 +1,34 @@
+package com.prema.sales;
+
+import java.util.*;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.prema.sales.entity.*;
+import com.prema.sales.dao.*;
+import com.prema.sales.daoImpl.*;
+
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class FeedbackUnitTest {
+@Autowired
+private FeedbackDao fd;
+
+	@Test
+	public void contextLoads() {
+		insert();
+	}
+	
+	public void insert() {
+		Feedback fed = new Feedback();
+		fed.setOrgid(99);
+		fed.setRating(5);
+		fed.setReviews("Maza aa gaya");
+		String result=fd.insert(fed);
+		System.out.println(result);
+	}
+}

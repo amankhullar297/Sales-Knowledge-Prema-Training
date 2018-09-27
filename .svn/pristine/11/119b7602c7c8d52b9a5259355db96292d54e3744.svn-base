@@ -1,0 +1,69 @@
+package com.prema.sales;
+import java.util.*;
+	import org.junit.Test;
+	import org.junit.runner.RunWith;
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.boot.test.context.SpringBootTest;
+	import org.springframework.test.context.junit4.SpringRunner;
+
+import com.prema.sales.dao.ProductDao;
+import com.prema.sales.entity.Product;
+
+	@RunWith(SpringRunner.class)
+	@SpringBootTest
+	public class ProductTest {
+		@Autowired
+		private ProductDao productDao;
+		@Test
+		public void contextLoads() {
+		//insert();
+		//update();
+		selectAll();
+		}
+		
+		
+	   public void insert() {
+		   Product product =new Product();
+		   // product.setProductId(50);
+			product.setProductProvider("prema");
+			product.setProductType("lapi");
+			product.setUsageType("mac");
+			product.setUnitPrice(100);
+			product.setOrgId(2);
+		
+		    String result=productDao.insert(product);
+		    System.out.println(result);
+	   }
+	   public void delete() {
+	   int id =1;
+	   String result = productDao.delete(id);
+	   System.out.println(result);
+	}
+	 
+	   public void update( ) {
+		   Product product  =new Product();
+		   product.setProductId(3);
+		   product.setProductProvider("aditya");
+		   product.setProductType("msword");
+		   product.setUsageType("commercial");
+		   product.setUnitPrice(40000);
+		   product.setOrgId(1);
+		    String result=productDao.update(product);
+		    System.out.println(result);  
+	   }
+	  
+	 public void selectAll() {
+		 List<Product> list = productDao.selectAllByOrgId(1);
+		 System.out.println(list);
+	 }
+	 public void selectByName( ) {
+		 List<Product> list = productDao.findByName("Shivani");
+		 System.out.println(list);
+	 }
+	 public void selectById( ) {
+		Product p = productDao.findById(1);
+		 System.out.println(p);
+	 }
+	}
+
+

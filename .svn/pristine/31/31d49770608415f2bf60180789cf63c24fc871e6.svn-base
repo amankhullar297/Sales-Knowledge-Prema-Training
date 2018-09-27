@@ -1,0 +1,76 @@
+package com.prema.sales.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.prema.sales.dao.OrgEmployeeDao;
+import com.prema.sales.entity.OrgEmployee;
+import com.prema.sales.entity.Student;
+
+public class OrgEmployeeController {
+	
+	@Autowired
+	OrgEmployeeDao dao;
+	
+   @RequestMapping(value="/orgemployee" ,method=RequestMethod.GET)
+	public ModelAndView studentLoad(ModelMap model) {
+		List<OrgEmployee> list = dao.selectAll();
+		OrgEmployee orgemployee= new OrgEmployee();
+		ModelAndView modelAndView = 
+				new ModelAndView();
+		modelAndView.setViewName("orgEmpProfile");
+		modelAndView.addObject("orgEmployeeList", list);
+		modelAndView.addObject(orgemployee);
+		return modelAndView;
+	}
+   @RequestMapping(value="/orgemployeeInsert",method=RequestMethod.POST)
+	public ModelAndView OrgEmployeeInsert(@ModelAttribute("OrgEmployee") OrgEmployee o) {
+	System.out.println(o);
+	String result  = "";
+	
+	if (o.getEmpId()>0) {
+		result=dao.update(o);		
+	}else 
+	{
+	result=dao.insert(o);
+	}
+	ModelAndView modelAndView = new ModelAndView();
+	modelAndView.setViewName("orgemployee");
+	List<OrgEmployee> list = dao.selectAll();
+   modelAndView.addObject("employeeList",list);
+   o= new OrgEmployee();
+   modelAndView.addObject("OrgEmployee",o);
+   return modelAndView;
+   }
+	
+   @RequestMapping(value="/orgemployeeDelete",method=RequestMethod.POST)
+   public ModelAndView orgemployeeDelete(@RequestParam("id") int id) {
+   String result  = dao.delete(id);
+   ModelAndView modelAndView = new ModelAndView();
+   modelAndView.setViewName("orgemployee");
+   List<OrgEmployee> list = dao.selectAll();
+   modelAndView.addObject("employeeList",list);
+   OrgEmployee o = new OrgEmployee();
+   modelAndView.addObject(o);
+   return modelAndView;
+   }
+   @RequestMapping(value="/orgemployeeFind",method=RequestMethod.POST)
+   public ModelAndView EmployeeFind(@RequestParam("id") int id) {
+   OrgEmployee o = dao.findByEmpId(id);
+   ModelAndView modelAndView = new ModelAndView();
+   modelAndView.setViewName("orgemployee");
+   List<OrgEmployee> list = dao.selectAll();
+   modelAndView.addObject("employeeList",list);
+   modelAndView.addObject("OrgEmployee",o);
+
+   return modelAndView;
+   	}
+   }
+

@@ -1,0 +1,61 @@
+package com.prema.sales.controller;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.prema.sales.dao.PssRateDao;
+import com.prema.sales.entity.PssRate;
+
+@Controller
+public class PssRateController {
+	@Autowired
+		PssRateDao dao;
+   @RequestMapping(value ="/PssRate",method = RequestMethod.GET)
+   public ModelAndView PssRateLoad(ModelMap modelMap) {
+	   List<PssRate> list =dao.selectAll();
+	   PssRate PssRate=new PssRate();
+	   ModelAndView modelAndView=new ModelAndView();
+	   modelAndView.setViewName("pssAdminPssRate");
+	   modelAndView.addObject("PssRateList", list);
+	   modelAndView.addObject("k",PssRate);
+	   return modelAndView ;
+	   	}
+   		@RequestMapping(value="/PssRateInsert",method=RequestMethod.POST)
+   		public ModelAndView PssRateInsert(@ModelAttribute("k") PssRate PssRate)
+   		{
+   			System.out.println(PssRate);
+   			String result ="";
+   			java.util.Date date=new Date();
+   			java.sql.Date dt=new java.sql.Date(date.getTime());
+   			PssRate.setRateDate(dt);
+   				result=dao.insert(PssRate);
+   				
+   			
+   			ModelAndView modelAndView=new ModelAndView();
+   			modelAndView.setViewName("pssAdminPssRate");
+   			List<PssRate> list =dao.selectAll();
+   			modelAndView.addObject("PssRateList",list);
+   			PssRate=new PssRate();
+   			modelAndView.addObject("PssRate",PssRate);
+   			return modelAndView;
+   			}
+   		@RequestMapping(value="PssRateFind",method=RequestMethod.POST)
+   		public ModelAndView PssRateFind(@RequestParam("RateId")int RateId) {
+   			PssRate k=dao.findById(RateId);
+   			ModelAndView modelAndView=new ModelAndView();
+   			modelAndView.setViewName("PssRate");
+   			List<PssRate>list=dao.selectAll();
+   			modelAndView.addObject("PssRateList",list);
+   			modelAndView.addObject("PssRate",k);
+   			return modelAndView;
+   		}
+}

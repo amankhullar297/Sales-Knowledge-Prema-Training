@@ -1,0 +1,46 @@
+package com.prema.sales;
+
+import java.sql.Date;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.prema.sales.dao.KnowledgeRateDao;
+import com.prema.sales.entity.KnowledgeRate;
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class KnowledgeRateDaoTest {
+	@Autowired
+	private KnowledgeRateDao knowledgeRate ;
+	@Test
+	public void contextLoad() {
+		insert();
+		}
+	public void insert() {
+	Date d=new Date(System.currentTimeMillis());
+	KnowledgeRate k=new KnowledgeRate();
+	k.setEmpId(3);
+	k.setSalesId(1);
+	k.setRating(1);
+	k.setRateStatus('L');
+	k.setKnowDate(d);
+	System.out.println(k);
+	String result =knowledgeRate.insert(k);
+	System.out.println(result);
+		}
+	
+	public void update() {
+		KnowledgeRate k=new KnowledgeRate();
+		k.setEmpId(1);
+		k.setSalesId(1);
+		k.setRating(1);
+		k.setRateStatus('m');
+		
+		System.out.println(k);
+		String result =knowledgeRate.update(k);
+		System.out.println(result);
+	}
+}

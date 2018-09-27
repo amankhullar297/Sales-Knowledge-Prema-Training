@@ -1,0 +1,60 @@
+<%@include file="include/header.jsp"%>
+<%@include file="include/sidebar.jsp"%>
+<script>
+
+window.onload = function() {
+	showSuccessMessage();
+	};
+
+</script>
+<section class="content">
+					<div class="body">
+						<div class="table-responsive">
+							<table
+								class="table table-bordered table-striped table-hover dataTable js-exportable">
+								<thead>
+									<tr>
+										<th>OrgName</th>
+										<th>OrgAddress</th>
+										<th>Email</th>
+										<th>ContactNo.</th>
+										<th>Plan</th>
+										<th>Date</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th>OrgName</th>
+										<th>OrgAdrress</th>
+										<th>Email</th>
+										<th>ContactNo</th>
+										<th>Plan</th>
+										<th>Date</th>
+									</tr>
+								</tfoot>
+								<tbody>
+								
+							<td><c:out value="${RegOrg.orgName}"></c:out></td>
+											<td><c:out value="${RegOrg.orgAddress}"></c:out></td>
+											<td><c:out value="${RegOrg.email}"></c:out></td>
+											<td><c:out value="${RegOrg.contactNo}"></c:out></td>
+											<td><c:out value="${RegOrg.plan.description}"></c:out></td>
+											<td><c:out value="${RegOrg.date}"></c:out></td>
+											
+								</tbody>
+							</table>
+						
+								<form:form modelAttribute="RegOrg" action="RegOrgUpdate">							
+								<form:hidden path="orgId"/>
+								
+								<form:input type ="text" path="orgName" maxlength="50" minlength="1" required="required"/>
+								<form:input type ="text" path="orgAddress" maxlength="100" minlength="5" required="required"/>
+								<form:input type ="text" path="contactNo" maxlength="10" minlength="8" required="required"/>
+								<input type="submit" value="Update">
+							</form:form>
+						</div>
+					</div>
+		<!-- #END# Exportable Table -->
+	
+</section>
+<%@include file="include/footer.jsp"%>

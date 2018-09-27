@@ -1,0 +1,12 @@
+package com.prema.sales.dao;
+import java.util.*;
+import com.prema.sales.entity.Feedback;
+ 
+import java.util.*;
+ 
+public interface FeedbackDao {
+public String insert(Feedback f);
+public String delete(int fbId);
+public List<Feedback> selectAll();
+public Feedback findById(int fbId);
+}

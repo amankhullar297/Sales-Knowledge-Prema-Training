@@ -1,0 +1,19 @@
+<script type="text/javascript">
+
+function onlyAlphabets(e, t){
+
+	if(window.event){
+		var charCode = window.event.keyCode;
+	}
+	else if (e){
+		var charCode = e.which;
+	}
+	else {return true;}
+	if((charCode>64 && charCode<91) || (charCode>96 &&charCode<123))
+		return true;
+	else 
+		return false;
+}
+
+
+</script>

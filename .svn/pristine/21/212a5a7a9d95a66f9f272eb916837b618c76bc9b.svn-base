@@ -1,0 +1,61 @@
+package com.prema.sales;
+
+import java.util.*;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.prema.sales.dao.ClientCategoryDao;
+import com.prema.sales.entity.ClientCategory;
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ClientCategoryTest {
+	@Autowired
+	
+private ClientCategoryDao pd;
+	
+	@Test
+	public void contextLoads() {
+		
+	}
+	public void insert() {
+	ClientCategory cl=new ClientCategory();
+	cl.setClientId(6);
+	cl.setCategory("category 6");
+	String result=pd.insert(cl);
+	System.out.println(result);
+		
+	}
+	public void delete() {
+		int catId=11;
+		String result=pd.delete(catId);
+		System.out.println(result);
+	}
+	public void update() {
+		ClientCategory cl=new ClientCategory();
+		cl.setClientId(4);
+		cl.setCatId(6);
+		cl.setCategory("new1");
+		String result=pd.update(cl);
+		System.out.println(result);
+	}
+	public void selectAll() {
+		List<ClientCategory> list=pd.selectAll();
+		System.out.println(list);
+	}
+	public void selectByCatId() {
+		ClientCategory c=pd.findByCategoryId(5);
+		System.out.println(c);
+	}
+	public void selectByClientId() {
+		List<ClientCategory> list=pd.findByClientId(3);
+		System.out.println(list);
+	}
+	public void selectByCategory() {
+		List<ClientCategory> list=pd.findByCategory("category 3");
+		System.out.println(list);
+	}
+}

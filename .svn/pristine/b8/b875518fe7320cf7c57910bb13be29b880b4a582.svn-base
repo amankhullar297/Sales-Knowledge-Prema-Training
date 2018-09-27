@@ -1,0 +1,56 @@
+package com.prema.sales.entity;
+import java.sql.Date;
+import javax.persistence.*;
+@Entity
+@Table(name="PssRate")
+public class PssRate {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column
+	private int rateId;
+	@Column
+	private int empId;
+	@Column
+	private int orgId;
+	@Column
+	private int rating;
+	@Column
+	private Date rateDate;
+	public int getRateId() {
+		return rateId;
+	}
+	public void setRateId(int rateId) {
+		this.rateId = rateId;
+	}
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public int getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(int orgId) {
+		this.orgId = orgId;
+	}
+	public int getRating() {
+		return rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	public Date getRateDate() {
+		return rateDate;
+	}
+	public void setRateDate(Date rateDate) {
+		this.rateDate = rateDate;
+	}
+	@Override
+	public String toString() {
+		return "PssRate [rateId=" + rateId + ", empId=" + empId + ", orgId=" + orgId + ", rating=" + rating
+				+ ", rateDate=" + rateDate + "]";
+	}
+	
+	
+}

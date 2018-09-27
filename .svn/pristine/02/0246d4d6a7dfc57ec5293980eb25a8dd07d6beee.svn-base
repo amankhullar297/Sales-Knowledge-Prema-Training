@@ -1,0 +1,132 @@
+package com.prema.sales.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.prema.sales.dao.ProductCompetitorDao;
+import com.prema.sales.entity.ProductCompetitor;
+
+@Controller
+public class ProductCompetitorController {
+	@Autowired
+	ProductCompetitorDao pcd;
+
+	@RequestMapping(value = "/productCompetitorInsert", method = RequestMethod.POST)
+	public ModelAndView productCompetitorInsert(@ModelAttribute("productCompetitor") ProductCompetitor pc) {
+
+		String result = "";
+		if (pc.getCompId() > 0) {
+			result = pcd.update(pc);
+		} else {
+			result = pcd.insert(pc);
+		}
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("pss_admin");
+		// int orgId = 1;
+		// List<ProductCompetitor> list = pcd.selectAll(orgId);
+		// modelAndView.addObject("competitorList", list);
+		// pc = new ProductCompetitor();
+		// modelAndView.addObject(pc);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/productCompetitorFindByCompId", method = RequestMethod.POST)
+	public ModelAndView productCompetitorFindByCompId(@RequestParam("compId") int compId) {
+		ProductCompetitor pc = pcd.findByCompId(compId);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("productCompetitor");
+		// int orgId = 1;
+		// List<ProductCompetitor> list = pcd.selectAll(orgId);
+		// modelAndView.addObject("competitorList", list);
+		// modelAndView.addObject(pc);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/pc", method = RequestMethod.POST)
+	public ModelAndView view() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("org_admin");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/productCompetitorFindByProductId", method = RequestMethod.POST)
+	public ModelAndView productCompetitorFindByProductId(@RequestParam("productId") int productId) {
+		ProductCompetitor pc = pcd.findByCompId(productId);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("productCompetitor");
+		// int orgId = 1;
+		// List<ProductCompetitor> list = pcd.selectAll(orgId);
+		// modelAndView.addObject("competitorList", list);
+		// modelAndView.addObject(pc);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/productCompetitorFindByCompName", method = RequestMethod.POST)
+	public ModelAndView productCompetitorFindByCompName(@RequestParam("compName") String compName) {
+		List<ProductCompetitor> compList = pcd.findByCompName(compName);
+		ProductCompetitor pc = new ProductCompetitor();
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("productCompetitor");
+		modelAndView.addObject("competitorList", compList);
+		modelAndView.addObject(pc);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/productCompetitorFindByProductType", method = RequestMethod.POST)
+	public ModelAndView productCompetitorFindByProductType(@RequestParam("productType") String productType) {
+		List<ProductCompetitor> compList = pcd.findByProductType(productType);
+		ProductCompetitor pc = new ProductCompetitor();
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("productCompetitor");
+		modelAndView.addObject("competitorList", compList);
+		modelAndView.addObject(pc);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/productCompetitorFindByProductProvider", method = RequestMethod.POST)
+	public ModelAndView productCompetitorFindByProductProvider(
+			@RequestParam("productProvider") String productProvider) {
+		List<ProductCompetitor> providerList = pcd.findByProductType(productProvider);
+		ProductCompetitor pc = new ProductCompetitor();
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("productCompetitor");
+		modelAndView.addObject("competitorList", providerList);
+		modelAndView.addObject(pc);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/productCompetitorSelectAll", method = RequestMethod.POST)
+	public ModelAndView productCompetitorLoad(@RequestParam("orgId") int orgId) {
+		// to show all data call StudentDao all select function
+		List<ProductCompetitor> list = pcd.selectAll(orgId);
+		// to send empty data
+		ProductCompetitor pc = new ProductCompetitor();
+		ModelAndView modelAndView = new ModelAndView("productCompetitor");
+		modelAndView.addObject("competitorlist", list);
+		modelAndView.addObject(pc);
+		return modelAndView;
+	}
+
+	// @RequestMapping(value = "/productCompetitorDelete", method =
+	// RequestMethod.POST)
+	// public ModelAndView productCompetitorDelete(@RequestParam("compId") int
+	// compId) {
+	// String result = pcd.delete(compId);
+	// ModelAndView modelAndView = new ModelAndView();
+	// modelAndView.setViewName("productCompetitor");
+	// List<ProductCompetitor> list = pcd.selectAll(orgId);
+	// modelAndView.addObject("competitorList", list);
+	// ProductCompetitor pc = new ProductCompetitor();
+	// modelAndView.addObject(pc);
+	// return modelAndView;
+	// }
+
+}

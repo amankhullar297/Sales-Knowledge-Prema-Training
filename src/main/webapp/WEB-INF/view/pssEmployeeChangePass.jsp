@@ -1,0 +1,67 @@
+<%@include file="userAssets/include/header.jsp" %>
+<%@include file="userAssets/include/sidebar.jsp" %>
+        <!-- End Left Sidebar  -->
+        <!-- Page wrapper  -->
+        <div class="page-wrapper">
+            <!-- Bread crumb -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-primary">Dashboard</h3> </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- End Bread crumb -->
+            <!-- Container fluid  -->
+            <div class="container-fluid">
+                <!-- Start Page Content -->
+               
+                             
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4>Basic Form</h4>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="basic-form">
+                                    
+                                    <form:form method="GET" modelAttribute="employee" action="validateChangePassword">
+                                        
+                                        <div class="form-group">
+                                            <label>Old Password:</label>
+                                            <form:input type="password" path="chkPass" class="form-control" placeholder="Enter Password"/>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>New Password:</label>
+                                            <form:input type="password" path="newPass" class="form-control" placeholder="Enter Password"/>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Confirm Password:</label>
+                                            <form:input type="password" path="confirmNewPass" class="form-control" placeholder="Enter Password"/>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-default">Submit</button>
+                                    </form:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                <!-- End PAge Content -->
+            </div>
+            <!-- End Container fluid  -->
+            <!-- footer -->
+            <footer class="footer"> © 2018 All rights reserved. Template designed by <a href="https://colorlib.com">Colorlib</a></footer>
+            <!-- End footer -->
+        </div>
+        <!-- End Page wrapper  -->
+    </div>
+    <!-- End Wrapper -->
+  <%@include file="userAssets/include/footer.jsp"%>

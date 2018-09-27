@@ -1,0 +1,14 @@
+package com.prema.sales.dao;
+import java.util.*;
+
+import com.prema.sales.entity.ClientCategory;
+
+public interface ClientCategoryDao {
+	public String insert(ClientCategory c);
+	public String update(ClientCategory c);
+	public String delete(int catId);
+	public List<ClientCategory> selectAll();
+	public List<ClientCategory> findByClientId(int clientId);
+	public ClientCategory findByCategoryId(int catId);
+	public List<ClientCategory> findByCategory(String category);
+}

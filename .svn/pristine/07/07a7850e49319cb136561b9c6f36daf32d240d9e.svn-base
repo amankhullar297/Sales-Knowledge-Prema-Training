@@ -1,0 +1,130 @@
+package com.prema.sales.daoImpl;
+
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.Repository;
+
+import com.prema.sales.dao.PlanHistoryDao;
+import com.prema.sales.entity.PlanHistory;
+
+@Repository
+@Transactional
+
+public  class PlanHistoryDaoImpl implements PlanHistoryDao {
+	@Autowired
+	SessionFactory  sessionFactory;
+	@Override
+	public String insert( PlanHistory p) {
+		try {
+			System.out.println("trying to get session factory");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to save record");
+			System.out.println(p);
+			int planId = (int) session.save(p);
+			System.out.println("record inserted");
+			return " record inserted with id=" +p ;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+
+		}
+	}
+	@Override
+	public String update( PlanHistory p) {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to update");
+			session.update(p);
+			System.out.println("undeted sucessfully");
+			return " recorded with td ="+p.getPlanHId();
+		}catch(Exception q )
+		{
+			q.printStackTrace();
+			return "Error";
+		}}
+		
+	
+	@Override
+	public String delete(int planHId) {
+		try {
+			System.out.println("trying to get session ");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to delete");
+			 PlanHistory p = session.get( PlanHistory.class, planHId);
+			session.delete(p);
+			System.out.println("deleted");
+			return " record deleted suce/ssfull with id =" +p.getPlan();
+			
+		}catch(Exception q)
+		{q.printStackTrace();
+			return "Error";
+		}
+	}
+		
+		
+	
+	@Override
+	public List<PlanHistory> selectAll() {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Query q = session.createQuery("from PlanHistory");
+			List<PlanHistory> list=q.list();
+			return list;
+			}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	
+	
+	@Override
+	public PlanHistory findByplanHId(int planHId) {
+		try {
+			System.out.println("trying to get session ");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("trying to find by id"+planHId);
+			 PlanHistory p = session.get( PlanHistory.class, planHId);
+			System.out.println("found");
+			return p;
+			
+		}catch(Exception p)
+		{p.printStackTrace();
+		return null;
+		
+	}
+	}
+	public List<PlanHistory> findByOrgId(String orgId){
+		try {
+			System.out.println("trying to get session ");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("query created");
+			Query q = session.createQuery("from PlanHistory where orgId=:o");
+			q.setString("o",orgId);
+			List<PlanHistory> list= q.list();
+			return list;
+			}catch(Exception e)
+		    {e.printStackTrace();
+		      return null;
+		
+	}
+	}
+
+		
+		
+	}
+
+	
+	
+	
+
+
+

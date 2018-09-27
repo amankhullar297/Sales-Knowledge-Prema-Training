@@ -1,0 +1,66 @@
+<%@ include file = "include/header.jsp" %>
+<div id="page-wrapper">
+	<div id="page" class="container">
+		<div class="title">
+			<h2>This is my second page</h2>
+		</div>
+		<div>
+		<!-- Add your form tag here -->
+		
+<form:form method="get" modelAttribute="feedback" action="feedbackInsert">
+<h2>Enter Feedback to save</h2><br></br>
+<table align="center">
+
+<tr><td>OrgId:</td> 
+<td><form:input type="numer" path="regOrg"/></td></tr>
+<tr><td>Review:</td><td>
+<form:input type="text" path="reviews"/></td></tr>
+<tr><td>Rating out of 5:</td><td>
+<form:input type="number" path="rating"/></td></tr>
+
+</table>
+<input align="center" type="submit">
+
+<form:hidden path="fStatus"/>
+<form:hidden  path="fbid"/><br></br><br></br><br></br>
+</form:form>
+
+
+<h2>Feedbacks</h2><br></br>
+
+<table align="center">
+<tr>
+	<th>fbId</th>
+	<th>OrgId</th>
+	<th>Review</th>
+	<th>Rating</th>
+</tr>
+<c:forEach var="feedback" items="${feedbackList}">
+<tr>
+<td><c:out value="${feedback.fbid}"></c:out></td>
+<td><c:out value="${feedback.regOrg.orgId}"></c:out></td>
+<td><c:out value="${feedback.reviews}"></c:out></td>
+<td><c:out value="${feedback.rating}"></c:out></td>
+
+<td><form:form modelAttribute="feedback" action="feedbackDelete">
+<form:hidden value="${feedback.fbid}" path="fbid"/>
+<input type="submit" value="Delete">
+</form:form></td>
+
+
+
+</c:forEach>
+</table>
+		
+		
+		
+		
+		
+		
+		<!-- Add your form tag here --> 
+		</div>
+		</div>
+</div>
+
+
+<%@ include file = "include/footer.jsp" %>

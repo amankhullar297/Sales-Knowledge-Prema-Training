@@ -1,0 +1,63 @@
+package com.prema.sales.entity;
+import java.sql.Date;
+import javax.persistence.*;
+@Entity
+@Table(name="KnowledgeRate")
+public class KnowledgeRate {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column
+	private int knowId;
+	@Column
+	private int empId;
+	@Column
+	private int salesId;
+	@Column
+	private int rating;
+	@Column
+	private Date knowDate;
+	@Column
+	private char rateStatus;
+	public int getKnowId() {
+		return knowId;
+	}
+	public void setKnowId(int knowId) {
+		this.knowId = knowId;
+	}
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public int getSalesId() {
+		return salesId;
+	}
+	public void setSalesId(int salesId) {
+		this.salesId = salesId;
+	}
+	public int getRating() {
+		return rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	public Date getKnowDate() {
+		return knowDate;
+	}
+	public void setKnowDate(Date knowDate) {
+		this.knowDate = knowDate;
+	}
+	public char getRateStatus() {
+		return rateStatus;
+	}
+	public void setRateStatus(char rateStatus) {
+		this.rateStatus = rateStatus;
+	}
+	@Override
+	public String toString() {
+		return "knowledgeRate [knowId=" + knowId + ", empId=" + empId + ", salesId=" + salesId + ", rating=" + rating
+				+ ", knowdate=" + knowDate + ", rateStatus=" + rateStatus + "]";
+	}
+	
+}

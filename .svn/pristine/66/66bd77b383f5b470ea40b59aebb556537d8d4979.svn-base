@@ -1,0 +1,7 @@
+package com.prema.sales.dao;
+
+import com.prema.sales.common.SessionBean;
+
+public interface LoginDao {
+	public SessionBean findByEmailAndPass (String email,String pass);
+}

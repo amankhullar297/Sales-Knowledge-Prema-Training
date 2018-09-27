@@ -1,0 +1,97 @@
+<%@include file="include/header.jsp"%>
+<%@include file="include/orgEmpSidebar.jsp"%>
+    <section class="content">
+	<div class="container-fluid">
+		
+		
+		<div class="body">
+			
+			<!-- <div class="alert alert-warning alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>Warning!</strong> Better check yourself, you're not looking
+				too good.
+			</div> -->
+			
+		</div>
+		
+		<!-- Advanced Validation -->
+		<div class="row clearfix">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="card">
+					<div class="header">
+						<h2>RATING FORM</h2>
+						
+					</div>
+					<div class="body">
+						<form:form id="form_advanced_validation" modelAttribute="knowledgeRate" method="POST" action="KnowledgeRateInsert">
+							
+							<!-- copy text input field from here -->
+							
+							
+							
+							
+							<div class="form-group form-float">
+							<p>
+                                    </p>
+								<div>
+									<form:input type="hidden" class="form-control" path="salesKnowledge.salesId" value="${salesKnowledges.salesId }" />
+									
+								</div>
+							
+							</div>
+							
+							
+							
+							<!-- copy text input field from here -->
+							
+							
+						<!-- 	for date select from here -->
+							
+							
+
+								
+							
+							
+							<!-- 	for date select from here -->
+							
+							
+							
+			
+							
+							
+							<!-- for dropdown select this div -->
+							
+							
+							
+							<div class="form-group form-float">
+                                    <p>
+                                        <b>Rating</b>
+                                    </p>
+                                    <form:select class="form-control show-tick" path="rating" data-live-search="true">
+                                        <option value="">---Rating---</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                       
+                                    </form:select>
+                                </div>
+                                
+                                
+                                <!-- for dropdown select this div -->
+                                
+                                
+							<button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+						</form:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- #END# Advanced Validation -->
+	</div>
+</section>
+</section><%@include file="include/footer.jsp"%>

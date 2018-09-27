@@ -1,0 +1,71 @@
+package com.prema.sales.controller;
+import java.sql.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import com.prema.sales.common.SessionBean;
+import com.prema.sales.dao.PlanDao;
+import com.prema.sales.dao.PlanHistoryDao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.prema.sales.entity.ClientCompany;
+import com.prema.sales.entity.Plan;
+import com.prema.sales.entity.PlanHistory;
+import com.prema.sales.entity.Product;
+import com.prema.sales.entity.RegOrg;
+import com.prema.sales.entity.SalesKnowledge;
+
+@Controller
+
+public class PlanRenewController {
+	@Autowired
+	PlanDao pr;
+	
+	@Autowired	
+	PlanHistoryDao  phd;
+	
+	@RequestMapping(value="/planRenew",method=RequestMethod.GET)
+	public ModelAndView planRenewLoad(ModelMap model) {
+		List <Plan>list=pr.selectAllActivePlans();
+		PlanHistory planHistory=new PlanHistory();
+		ModelAndView modelAndView=new ModelAndView("orgAdminPlanRenew");
+		modelAndView.addObject("planList",list);
+		modelAndView.addObject(planHistory);
+		return modelAndView;
+		
+	}
+	@RequestMapping(value="/planRenewInsert",method=RequestMethod.GET)
+	public ModelAndView planRenewInsert(@ModelAttribute("planHistory") PlanHistory ph) {
+		String result="";
+	//	System.out.println(ph);
+		RegOrg regOrg = new RegOrg();
+		regOrg.setOrgId(1);
+		ph.setRegOrg(regOrg);
+		ph.setPlanDate(new Date(System.currentTimeMillis()));
+			result=phd.insert(ph);
+		ModelAndView modelAndView=new ModelAndView();
+		modelAndView.setViewName("orgAdminPlanRenew");
+		List<Plan>list=pr.selectAllActivePlans();
+		modelAndView.addObject("planList",list);
+		PlanHistory planHistory=new PlanHistory();
+		modelAndView.addObject(planHistory);
+		modelAndView.addObject("msg","plan will be update");
+		return modelAndView;
+	}
+
+}
+
+
+
+
+
+
+

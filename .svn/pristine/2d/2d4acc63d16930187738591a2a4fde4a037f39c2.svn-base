@@ -1,0 +1,185 @@
+<%@include file="include/header.jsp"%>
+<%@include file="include/orgEmpSidebar.jsp"%>
+    <section class="content">
+	<div class="container-fluid">
+		
+		
+		<div class="body">
+			
+			<!-- <div class="alert alert-warning alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>Warning!</strong> Better check yourself, you're not looking
+				too good.
+			</div> -->
+			
+		</div>
+		
+		<!-- Advanced Validation -->
+		<div class="row clearfix">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="card">
+					<div class="header">
+						<h2>RATING FORM</h2>
+						
+					</div>
+					<div class="body">
+						<form id="form_advanced_validation" method="POST">
+							
+							
+							<!-- copy text input field from here -->
+							
+							
+							
+							
+							<div class="form-group form-float">
+							<p>
+                                        <b>KnowId</b>
+                                    </p>
+								<div class="form-line">
+									<input type="number" class="form-control" name="text field value" required>
+									<label class="form-label">Number</label>
+								</div>
+								<div class="help-info">Numbers only</div>
+							</div>
+							
+							
+							
+							<!-- copy text input field from here -->
+							
+							
+						<!-- 	for date select from here -->
+							
+							
+							<div class="form-group form-float">
+							<p>
+                                        <b>SalesId</b>
+                                    </p>
+								<div class="form-line">
+									<input type="number" class="form-control" name="text field value" required>
+									<label class="form-label">Number</label>
+								<div class="help-info">Numbers only</div>
+								</div>
+								
+							
+							
+							<!-- 	for date select from here -->
+							
+							
+							
+							<div class="form-group form-float">
+							<p>
+                                        <b>EmpId</b>
+                                    </p>
+								<div class="form-line">
+									<input type="number" class="form-control" name="number"
+										required> <label class="form-label">Number</label>
+								</div>
+								<div class="help-info">Numbers only</div>
+							</div>
+							<div class="form-group form-float">
+							<p>
+                                        <b>Rate Status</b>
+                                    </p>
+								<div class="form-line">
+									<input type="text" class="form-control" name="status"> <label
+										class="form-label">status</label>
+								</div>
+								<div class="help-info">Status only</div>
+							</div>
+							
+							
+							<!-- for dropdown select this div -->
+							
+							
+							
+							<div class="form-group form-float">
+                                    <p>
+                                        <b>Rating</b>
+                                    </p>
+                                    <select class="form-control show-tick" data-live-search="true">
+                                        <option>Rating</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                    </select>
+                                </div>
+                                
+                                
+                                <!-- for dropdown select this div -->
+                                
+                                
+                                <div class="form-group">
+								<input type="checkbox" id="checkbox" name="checkbox"> <label
+									for="checkbox">I have read and accept the terms</label>
+							</div>
+							<button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- #END# Advanced Validation -->
+		<!--DateTime Picker -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                DATETIME PICKER
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="datepicker form-control" placeholder="Please choose a date...">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="timepicker form-control" placeholder="Please choose a time...">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="datetimepicker form-control" placeholder="Please choose date & time...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--#END# DateTime Picker -->
+		
+	</div>
+</section>
+</section><%@include file="include/footer.jsp"%>

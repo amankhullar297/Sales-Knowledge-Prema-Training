@@ -1,0 +1,21 @@
+<div id="page-wrapper">
+	<div id="page" class="container">
+		<div class="title">
+			<h2>This is my second page</h2>
+		</div>
+		<div>
+		
+		<h1>HURRAY!! ${result}</h1>
+		
+		
+	<form action="testSession" action="get">
+	<input type="submit">
+	</form>
+			
+		<!-- Add your form tag here --> 
+		</div>
+		</div>
+</div>
+
+
+		

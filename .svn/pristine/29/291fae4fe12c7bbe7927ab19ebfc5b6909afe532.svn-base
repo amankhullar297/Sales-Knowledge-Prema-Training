@@ -1,0 +1,40 @@
+package com.prema.sales.daoImpl;
+
+import javax.transaction.Transactional;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.prema.sales.common.SessionBean;
+import com.prema.sales.dao.LoginDao;
+import com.prema.sales.entity.OrgEmployee;
+import com.prema.sales.entity.OrgEnq;
+
+@Transactional
+@Repository
+public class LoginDaoImpl implements LoginDao {
+	@Autowired
+    SessionFactory sessionFactory;
+	public SessionBean findByEmailAndPass(String email,String pass)
+	{
+		try
+		{
+			System.out.println("trying to log in");
+			Session session = sessionFactory.getCurrentSession();
+			System.out.println("query created");
+			Query q = session.createQuery("from OrgEmployee where email =:email and pwd =:password").setString("email", email).setString("password", pass);
+			OrgEmployee orgEmployee = (OrgEmployee)q.uniqueResult();
+			System.out.println(orgEmployee);
+		//	SessionBean sessionBean = new SessionBean(orgEmployee.getOrgEnqId(), orgEmployee.getOrgName(), orgEmployee.getE, empName, role)
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return null;
+	}
+
+}

@@ -1,0 +1,107 @@
+package com.prema.sales.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.prema.sales.common.SessionBean;
+import com.prema.sales.dao.OrgEnqdao;
+import com.prema.sales.dao.PlanDao;
+import com.prema.sales.daoImpl.PlanDaoImpl;
+import com.prema.sales.entity.OrgEnq;
+import com.prema.sales.entity.Plan;
+
+@Controller
+public class OrgEnqController {
+	@Autowired
+	OrgEnqdao orgEnqdao;
+	
+	@Autowired
+	PlanDao planDao; 
+	
+	@Autowired
+	HttpSession session; 
+	@RequestMapping(value="/orgEnqInsert",method=RequestMethod.GET)
+	public ModelAndView orgEnqInsert(@ModelAttribute ("orgEnq") OrgEnq orgEnq) {
+		System.out.println(orgEnq);
+		List<OrgEnq> list=orgEnqdao.findAll();
+		String result=orgEnqdao.insert(orgEnq);
+		System.out.println(result);
+		//PlanDaoImpl pd=new PlanDaoImpl();
+		List<Plan> planList=planDao.selectAllActivePlans();
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("pssAdminOrgEnquiry");
+		mv.addObject("orgEnqList",list);
+		mv.addObject("planList",planList);
+		mv.addObject("orgEnq",new OrgEnq());
+		mv.addObject("result",result);
+		return mv;
+	}
+	@RequestMapping(value="/orgEnqViewAll",method=RequestMethod.GET)
+	public ModelAndView orgEnqViewAll() {
+		SessionBean sessionBean=  (SessionBean)session.getAttribute("sessionBean");
+		if(sessionBean!=null) {
+		//int orgId=sessionBean.getOrgId();
+		//OrgEnq orgEnq=orgEnqdao.findById(1);
+		List<OrgEnq> list=orgEnqdao.findAll();
+		//List<Plan> planList=new ArrayList<>();
+		//PlanDaoImpl pd=new PlanDaoImpl();
+		//pd.selectAllActivePlans();
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("orgEnquiry");
+		//mv.addObject("planList",planList);
+		mv.addObject("orgEnqList",list);
+		mv.addObject("orgEnq",new OrgEnq());
+		return mv;
+		}
+		else {
+			return new ModelAndView("redirect:/");
+		}
+	}
+	@RequestMapping(value="/loadInsert",method=RequestMethod.GET)
+	public ModelAndView loadInsert() {
+		List<OrgEnq> list=orgEnqdao.findAll();
+		List<Plan> planList=planDao.selectAllActivePlans();
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("pssAdminOrgEnquiry");
+		mv.addObject("planList",planList);
+		mv.addObject("orgEnqList",list);
+		mv.addObject("orgEnq",new OrgEnq());
+		return mv;
+	}
+	@RequestMapping(value="/init",method=RequestMethod.GET)
+	public ModelAndView index() {
+		ModelAndView mv=new ModelAndView("index");
+		return mv;
+	}
+	@RequestMapping(value="/acceptEnq",method=RequestMethod.POST)
+	public ModelAndView accept(@RequestParam("id") int id,@RequestParam("password") String password) {
+		List<OrgEnq> list=orgEnqdao.acceptRequest(id, password);
+		ModelAndView mv=new ModelAndView("orgEnquiry");
+		mv.addObject("orgEnqList",list);
+		mv.addObject("orgEnq",new OrgEnq());
+		return mv;
+	}
+	
+	@RequestMapping(value="/orgEnqDelete",method=RequestMethod.POST)
+	public ModelAndView orgEnqDelete(@RequestParam("id") int id) {
+		String result=orgEnqdao.delete(id);
+		List<OrgEnq> list=orgEnqdao.findAll();
+		System.out.println(result);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("orgEnquiry");
+		mv.addObject("orgEnqList",list);
+		mv.addObject("orgEnq",new OrgEnq());
+		return mv;
+	}
+}

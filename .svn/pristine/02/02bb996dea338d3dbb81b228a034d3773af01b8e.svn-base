@@ -1,0 +1,64 @@
+package com.prema.sales;
+import java.sql.Date;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.prema.sales.dao.PssRateDao;
+import com.prema.sales.entity.OrgEmployee;
+import com.prema.sales.entity.PssRate;
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class PssRateTest {
+	@Autowired
+	private PssRateDao PssRate ;
+	@Test
+	public void contextLoad() {
+		insert();
+		//update();
+		//selectAll();
+		//selectById();
+		}
+	@Test
+	public void insert() {
+	Date d=new Date(System.currentTimeMillis());
+	PssRate k=new PssRate();
+	OrgEmployee emp=new OrgEmployee();
+	emp.setEmpId(2);
+	k.setEmp(emp);
+	k.setRateId(1);
+	k.setRating(10);
+	k.setRateDate(d);
+	System.out.println(k);
+	String result =PssRate.insert(k);
+	System.out.println(result);
+		}
+	
+	public void update() {
+		Date d=new  Date(System.currentTimeMillis());
+		PssRate k=new PssRate();
+		k.setRateId(1);
+		OrgEmployee emp=new OrgEmployee();
+		emp.setEmpId(1);
+		k.setEmp(emp);
+		
+		k.setRating(2);
+		k.setRateDate(d);
+		System.out.println(k);
+		String result =PssRate.update(k);
+		System.out.println(result);
+	}
+	public void selectAll() {
+		List<PssRate>list=PssRate.selectAll();
+		System.out.println(list);
+	}
+	public void selectById() {
+		PssRate kr=PssRate.findById(1);
+		System.out.println(kr);
+	}
+}
+

@@ -1,0 +1,93 @@
+package com.prema.sales.controller;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
+import java.sql.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.prema.sales.common.SessionBean;
+import com.prema.sales.dao.KnowledgeRateDao;
+import com.prema.sales.dao.SalesKnowledgeDao;
+import com.prema.sales.entity.KnowledgeRate;
+import com.prema.sales.entity.OrgEmployee;
+import com.prema.sales.entity.SalesKnowledge;
+
+@Controller
+public class KnowledgeRateController {
+	@Autowired
+		KnowledgeRateDao dao;
+	@Autowired
+	SalesKnowledgeDao salesKnowledgeDao;
+   @RequestMapping(value ="/KnowledgeRate",method = RequestMethod.POST)
+   public ModelAndView KnowledgeRateLoad(@RequestParam("salesId") int salesId,ModelMap modelMap) {
+	   List<KnowledgeRate> list =dao.selectAll(1);
+	   KnowledgeRate knowledgeRate=new KnowledgeRate();	
+	   ModelAndView modelAndView=new ModelAndView();
+	   modelAndView.setViewName("orgEmployeeKnowledgeRate");
+	   modelAndView.addObject("KnowledgeRateList", list);
+	   modelAndView.addObject("salesKnowledges", salesKnowledgeDao.findById(salesId));
+	   modelAndView.addObject("knowledgeRate",knowledgeRate);
+	   return modelAndView ;
+	   	}
+   @RequestMapping(value ="/KnowledgeRate1",method = RequestMethod.GET)
+   public ModelAndView KnowledgeRateLoad1(ModelMap modelMap) {
+	   List<KnowledgeRate> list =dao.selectAll(1);
+	   KnowledgeRate knowledgeRate=new KnowledgeRate();
+	   ModelAndView modelAndView=new ModelAndView();
+	   modelAndView.setViewName("orgAdminKnowledgeRate");
+	   modelAndView.addObject("KnowledgeRateList", list);
+	   modelAndView.addObject(knowledgeRate);
+	   return modelAndView ;
+	   	}
+   		@RequestMapping(value="/KnowledgeRateInsert",method=RequestMethod.POST)
+   		public ModelAndView KnowledgeRateInsert(@ModelAttribute("knowledgeRate")KnowledgeRate k, HttpServletRequest request)
+   		{
+   			Date d=new Date(System.currentTimeMillis());
+   			k.setKnowDate(d);
+   			HttpSession session=request.getSession();
+   			SessionBean bean = (SessionBean)session.getAttribute("sessionBean");
+   			int empId=bean.getEmpId();
+   			OrgEmployee orgEmployee=new OrgEmployee();
+   			orgEmployee.setEmpId(empId);
+   			k.setOrgEmployee(orgEmployee);
+   			System.out.println("Function called");
+   			System.out.println(k);
+   			String result ="";
+   			if(k.getKnowId()>0) {
+   				result=dao.update(k);
+   			}else {
+   				result=dao.insert(k);
+   				
+   			}
+   			System.out.println(result);
+   			ModelAndView modelAndView=new ModelAndView();
+   			modelAndView.setViewName("orgEmployeeKnowledgeRate");
+   			List<KnowledgeRate> list =dao.selectAll(1);
+   			modelAndView.addObject("KnowledgeRateList",list);
+   			k=new KnowledgeRate();
+   			modelAndView.addObject("knowledgeRate",k);
+   			return modelAndView;
+   			}
+   		@RequestMapping(value="KnowledgeRateFind",method=RequestMethod.POST)
+   		public ModelAndView KnowledgeRateFind(@RequestParam("knowId")int knowId) {
+   			KnowledgeRate k=dao.findById(knowId);
+   			ModelAndView modelAndView=new ModelAndView();
+   			modelAndView.setViewName("KnowledgeRate");
+   			List<KnowledgeRate>list=dao.selectAll(1);
+   			modelAndView.addObject("KnowledgeRateList",list);
+   			modelAndView.addObject("KnowledgeRate",k);
+   			return modelAndView;
+   		}
+}
